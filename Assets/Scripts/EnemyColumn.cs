@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class EnemyColumn : MonoBehaviour
 {
-    public Action ColumnDestroyed;
+    public Action<EnemyColumn> ColumnDestroyed;
     
     public int EnemyCount => _enemies.Count - _destroyedEnemies;
 
@@ -32,7 +32,7 @@ public class EnemyColumn : MonoBehaviour
         EventManager.TriggerEvent(Constants.Events.ENEMY_DESTROYED);
         if (IsColumnEmpty())
         {
-            ColumnDestroyed?.Invoke();
+            ColumnDestroyed?.Invoke(this);
         }
     }
 
