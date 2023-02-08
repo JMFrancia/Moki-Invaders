@@ -45,6 +45,7 @@ public class EnemyFormationController : MonoBehaviour
 						_orderedColumns[n].ColumnDestroyed += OnColumnDestroyed;
 					}
 
+					//Better way to get this than at runtime via multiple component searches?
 					_halfEnemySpriteWidth =
 						GetComponentInChildren<EnemyController>().GetComponent<SpriteRenderer>().size.x / 2;
 					
@@ -70,12 +71,12 @@ public class EnemyFormationController : MonoBehaviour
 					}
 				}
 
-				float GetLeftBoundary()
+				float GetLeftBoundaryEdge()
 				{
 					return _orderedColumns[_leftMostActiveColumn].transform.position.x - _halfEnemySpriteWidth;
 				}
 				
-				float GetRightBoundary()
+				float GetRightBoundaryEdge()
 				{
 					return _orderedColumns[_rightMostActiveColumn].transform.position.x + _halfEnemySpriteWidth;
 				}
@@ -115,6 +116,7 @@ public class EnemyFormationController : MonoBehaviour
 					if (_timeSinceLastMove > _stepSpeed)
 					{
 						Move();
+						_timeSinceLastMove = 0;
 					}
 				}
 				
@@ -123,7 +125,7 @@ public class EnemyFormationController : MonoBehaviour
 				*/
 				void FireRandomShot()
 				{
-					GetRandomActiveColumn().FireShot();
+					GetRandomActiveColumn()?.FireShot();
 				}
 				
 				/*
@@ -144,6 +146,10 @@ public class EnemyFormationController : MonoBehaviour
 
 				EnemyColumn GetRandomActiveColumn()
 				{
+					//Redundancy check
+					if (_activeColumns.Count == 0)
+						return null;
+					
 					int randomActiveColumnIndex = UnityEngine.Random.Range(0, _activeColumns.Count);
 					return _activeColumns[randomActiveColumnIndex];
 				}
@@ -157,14 +163,14 @@ public class EnemyFormationController : MonoBehaviour
 					if (_movingLeft)
 					{
 						float leftWall = Camera.main.ViewportToWorldPoint(Vector3.zero).x;
-						if (Mathf.Approximately(leftWall, GetLeftBoundary()))
+						if (Mathf.Approximately(leftWall, GetLeftBoundaryEdge()))
 						{
 							_movingLeft = false;
 							delta += new Vector3(0f, -1 * _stepVerticalDistance, 0f);
 						}
 						else
 						{
-							float deltaLeftBoundary = GetLeftBoundary() - _stepHorizontalDistance;
+							float deltaLeftBoundary = GetLeftBoundaryEdge() - _stepHorizontalDistance;
 
 							float deltaLeft;
 							if (deltaLeftBoundary > leftWall)
@@ -183,14 +189,14 @@ public class EnemyFormationController : MonoBehaviour
 
 						float rightWall = Camera.main.ViewportToWorldPoint(Vector3.one).x;
 						
-						if (Mathf.Approximately(rightWall, GetRightBoundary()))
+						if (Mathf.Approximately(rightWall, GetRightBoundaryEdge()))
 						{
 							delta += new Vector3(0f, -1 * _stepVerticalDistance, 0f);
 							_movingLeft = true;
 						}
 						else
 						{
-							float deltaRightBoundary = GetRightBoundary() + _stepHorizontalDistance;
+							float deltaRightBoundary = GetRightBoundaryEdge() + _stepHorizontalDistance;
 							float deltaRight;
 							if (deltaRightBoundary < rightWall)
 							{

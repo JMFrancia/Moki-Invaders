@@ -26,7 +26,7 @@ public class EnemyColumn : MonoBehaviour
         }
     }
 
-    private void OnEnemyDestroyed(string name)
+    private void OnEnemyDestroyed()
     {
         _destroyedEnemies++;
         EventManager.TriggerEvent(Constants.Events.ENEMY_DESTROYED);

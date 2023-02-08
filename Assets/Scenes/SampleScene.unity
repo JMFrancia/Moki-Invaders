@@ -318,9 +318,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _shotSpeed: 1
-  _stepSpeed: 2
-  _stepHorizontalDistance: 0.005
-  _stepVerticalDistance: 0.5
+  _stepSpeed: 0.25
+  _stepHorizontalDistance: 0.15
+  _stepVerticalDistance: 0.25
 --- !u!1001 &1339310178
 PrefabInstance:
   m_ObjectHideFlags: 0

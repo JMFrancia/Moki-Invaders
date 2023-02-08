@@ -8,7 +8,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private GameObject _shotPrefab;
 
     public bool Alive => gameObject.activeInHierarchy;
-    public Action<string> OnDestroyed;
+    public Action OnDestroyed;
     
     public void ResetEnemy()
     {
@@ -33,7 +33,7 @@ public class EnemyController : MonoBehaviour
     
     private void Die()
     {
-        OnDestroyed?.Invoke(gameObject.name);
+        OnDestroyed?.Invoke();
         gameObject.SetActive(false);
     }
 }
