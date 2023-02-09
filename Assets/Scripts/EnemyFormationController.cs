@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Text;
 using UnityEditor.UIElements;
 using UnityEngine;
 using Random = System.Random;
@@ -9,9 +10,11 @@ using Random = System.Random;
 public class EnemyFormationController : MonoBehaviour
 {
 				[SerializeField] private float _shotSpeed = .01f;
-				[SerializeField] private float _stepSpeed = .5f;
+				[SerializeField] private float _minStepSpeed = 1.5f;
+				[SerializeField] private float _maxStepSpeed = .15f;
 				[SerializeField] private float _stepHorizontalDistance = .5f;
 				[SerializeField] private float _stepVerticalDistance = .5f;
+				[SerializeField] private bool _debugShowBoundaryGizmos = false;
 
 				private int TotalColumns => transform.childCount;
 				
@@ -24,15 +27,22 @@ public class EnemyFormationController : MonoBehaviour
 				private int _leftMostActiveColumn;
 				private float _halfEnemySpriteWidth;
 				private bool _active;
+				private float _stepSpeed;
+				private int _enemiesDestroyed;
+				private int _totalEnemies;
 
 				private void OnEnable()
 				{
 					EventManager.StartListening(Constants.Events.GAME_START, OnGameStart);
+					EventManager.StartListening(Constants.Events.GAME_OVER, OnGameOver);
+					EventManager.StartListening(Constants.Events.ENEMY_DESTROYED, OnEnemyDestroyed);
 				}
 				
 				private void OnDisable()
 				{
 					EventManager.StopListening(Constants.Events.GAME_START, OnGameStart);
+					EventManager.StopListening(Constants.Events.GAME_OVER, OnGameOver);
+					EventManager.StopListening(Constants.Events.ENEMY_DESTROYED, OnEnemyDestroyed);
 				}
 
 				void OnGameStart()
@@ -50,6 +60,8 @@ public class EnemyFormationController : MonoBehaviour
 					_movingLeft = false;
 					ResetAllEnemies();
 					_active = true;
+					_stepSpeed = _minStepSpeed;
+					_enemiesDestroyed = 0;
 				}
 				private void Awake()
 				{
@@ -60,9 +72,11 @@ public class EnemyFormationController : MonoBehaviour
 						_orderedColumns[n].ColumnDestroyed += OnColumnDestroyed;
 					}
 
+					_totalEnemies = GetComponentsInChildren<EnemyController>().Length;
+
 					//Better way to get this than at runtime via multiple component searches?
 					_halfEnemySpriteWidth =
-						GetComponentInChildren<EnemyController>().GetComponent<SpriteRenderer>().size.x / 2;
+						GetComponentInChildren<EnemyController>().GetComponent<SpriteRenderer>().bounds.size.x * .5f;
 
 					_active = false;
 				}
@@ -74,6 +88,16 @@ public class EnemyFormationController : MonoBehaviour
 					UpdateShot();
 				}
 
+				private void OnDrawGizmos()
+				{
+					if (_debugShowBoundaryGizmos)
+					{
+						Gizmos.color = Color.green;
+						Gizmos.DrawCube(new Vector3(GetLeftBoundaryEdge(), transform.position.y, transform.position.z), Vector3.one * _halfEnemySpriteWidth * 2);
+						Gizmos.DrawCube(new Vector3(GetRightBoundaryEdge(), transform.position.y, transform.position.z), Vector3.one * _halfEnemySpriteWidth * 2);
+					}
+				}
+
 				private void FixedUpdate()
 				{
 					if (!_active)
@@ -81,7 +105,14 @@ public class EnemyFormationController : MonoBehaviour
 					UpdateMove();
 				}
 
-				void OnGameOver()
+				void OnEnemyDestroyed()
+				{
+					_enemiesDestroyed++;
+					_stepSpeed = Mathf.Lerp(_maxStepSpeed, _minStepSpeed, 1 - (float)_enemiesDestroyed / (float)_totalEnemies);
+					Debug.Log("New step speed: " + _stepSpeed);
+				}
+
+				void OnGameOver(bool win)
 				{
 					_active = false;
 				}
@@ -119,6 +150,7 @@ public class EnemyFormationController : MonoBehaviour
 							_leftMostActiveColumn++;
 						}
 					}
+					Debug.Log("New left boundary column: " + _leftMostActiveColumn);
 
 					for (int n = _rightMostActiveColumn; n >= 0; n--)
 					{
@@ -127,6 +159,7 @@ public class EnemyFormationController : MonoBehaviour
 							_rightMostActiveColumn--;
 						}
 					}
+					Debug.Log("New right boundary column: " + _rightMostActiveColumn);
 				}
 
 				void UpdateShot()

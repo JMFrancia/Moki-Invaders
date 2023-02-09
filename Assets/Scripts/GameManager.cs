@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
     void OnPlayerDestroyed()
     {
         Debug.Log("Game over!");   
-        EventManager.TriggerEvent(Constants.Events.GAME_OVER_LOSS);
+        EventManager.TriggerEvent(Constants.Events.GAME_OVER, false);
         //ShowGameOverScreen();
         ShowStartScreen();
     }
@@ -64,6 +64,6 @@ public class GameManager : MonoBehaviour
     void OnAllEnemiesDestroyed()
     {
         Debug.Log("You win this round!");
-        EventManager.TriggerEvent(Constants.Events.GAME_OVER_WIN);
+        EventManager.TriggerEvent(Constants.Events.GAME_OVER, true);
     }
 }

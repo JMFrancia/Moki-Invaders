@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 /*
@@ -8,7 +9,10 @@ public class MoveInDirection : MonoBehaviour
 {
     [SerializeField] private float _speed = 1f;
     [SerializeField] private Direction _direction;
+    [SerializeField] private bool _useRigidBodyIfAvailable = false;
 
+    private Rigidbody2D _rigidbody2D; 
+    
     [System.Serializable]
     public enum Direction
     {
@@ -16,6 +20,11 @@ public class MoveInDirection : MonoBehaviour
         Down,
         Left,
         Right
+    }
+
+    private void Awake()
+    {
+        _rigidbody2D = GetComponent<Rigidbody2D>();
     }
 
     public void SetDirection(Direction dir)
@@ -46,6 +55,16 @@ public class MoveInDirection : MonoBehaviour
                 delta = Vector3.right;
                 break;
         }
-        transform.position += delta * amt;
+
+        Vector3 newPos = transform.position + delta * amt;
+        
+        if (_useRigidBodyIfAvailable && _rigidbody2D != null)
+        {
+            _rigidbody2D.MovePosition(newPos);
+        }
+        else
+        {
+            transform.position = newPos;
+        }
     }
 }

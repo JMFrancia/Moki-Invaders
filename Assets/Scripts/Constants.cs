@@ -10,11 +10,12 @@ public static class Constants
         public const string ALL_ENEMIES_DESTROYED = "AllEnemiesDestroyed";
         public const string PLAYER_SHOT_FIRED = "PlayerShotFired";
         public const string PLAYER_DESTROYED = "PlayerDestroyed";
-        public const string GAME_OVER_LOSS = "GameOverLoss";
+        public const string GAME_OVER = "GameOver";
         public const string ENEMY_SHOT_FIRED = "EnemeyShotFired";
         public const string GAME_START = "GameStart";
-        public const string GAME_OVER_WIN = "GameOverWin";
-        public const string APP_START = "AppStart";
+        public const string UFO_LAUNCHED = "UFOLaunched";
+        public const string UFO_DESTROYED = "AppStart";
+        public const string ENEMY_FORMATION_STEP = "EnemyFormationStep";
     }
 
     public static class Tags
