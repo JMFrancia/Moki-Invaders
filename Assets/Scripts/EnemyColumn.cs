@@ -16,7 +16,6 @@ public class EnemyColumn : MonoBehaviour
     {
         //Iterating over childcount instead of using recursive GetComponentsInChildren() in order to guarantee child order
         //for finding the bottom enemy of each column
-        //If we could guarantee no edge case where player shot hits an enemy other than the one at the bottom, would use a stack instead
         _enemies = new List<EnemyController>();
         for (int n = 0; n < transform.childCount; n++)
         {

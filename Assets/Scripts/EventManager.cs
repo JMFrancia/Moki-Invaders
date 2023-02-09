@@ -3,10 +3,10 @@ using UnityEngine;
 using UnityEngine.Events;
 
 /*
- * Global class for managing game events. 
+ * Class for managing global game events. 
  * Handles triggering, starting listening, stop listening. 
- * Can trigger events with or without paramters. 
- * Paramter data type must be supported; to expand it,
+ * Can trigger events with or without parameters. 
+ * Parameter data type must be supported; to expand it,
  * Add a subclass, a dictionary, a StartListening, StopListening, and Trigger
  * function for type T following example of others (just copy/paste and swap out).
  * 

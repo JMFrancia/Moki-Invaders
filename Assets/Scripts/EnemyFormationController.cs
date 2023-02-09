@@ -20,22 +20,37 @@ public class EnemyFormationController : MonoBehaviour
 				private List<EnemyColumn> _activeColumns;
 				private EnemyColumn[] _orderedColumns;
 				private bool _movingLeft;
-				private int _columnsDestroyed;
 				private int _rightMostActiveColumn;
 				private int _leftMostActiveColumn;
 				private float _halfEnemySpriteWidth;
+				private bool _active;
+
+				private void OnEnable()
+				{
+					EventManager.StartListening(Constants.Events.GAME_START, OnGameStart);
+				}
+				
+				private void OnDisable()
+				{
+					EventManager.StopListening(Constants.Events.GAME_START, OnGameStart);
+				}
+
+				void OnGameStart()
+				{
+					ResetFormationAndActivate();
+				}
 
 				/*
 				* Resets all enemies and moves formation to height
 				*/
-				public void ResetFormation(float height)
+				void ResetFormationAndActivate()
 				{
 					_timeSinceLastMove = 0f;
 					_timeSinceLastShot = 0f;
 					_movingLeft = false;
 					ResetAllEnemies();
+					_active = true;
 				}
-
 				private void Awake()
 				{
 					_orderedColumns = new EnemyColumn[TotalColumns];
@@ -48,24 +63,38 @@ public class EnemyFormationController : MonoBehaviour
 					//Better way to get this than at runtime via multiple component searches?
 					_halfEnemySpriteWidth =
 						GetComponentInChildren<EnemyController>().GetComponent<SpriteRenderer>().size.x / 2;
-					
-					ResetFormation(5);
+
+					_active = false;
 				}
 
 				private void Update()
 				{
-					if (_columnsDestroyed == TotalColumns)
+					if (!_active)
 						return;
-					UpdateMove();
 					UpdateShot();
 				}
-				
+
+				private void FixedUpdate()
+				{
+					if (!_active)
+						return;
+					UpdateMove();
+				}
+
+				void OnGameOver()
+				{
+					_active = false;
+				}
+
 				void OnColumnDestroyed(EnemyColumn column)
 				{
 					_activeColumns.Remove(column);
-					_columnsDestroyed++;
-					
-					if (_columnsDestroyed < TotalColumns)
+					if (_activeColumns.Count == 0)
+					{
+						EventManager.TriggerEvent(Constants.Events.ALL_ENEMIES_DESTROYED);
+						_active = false;
+					}
+					else
 					{
 						RecalculateColumnBoundaries();
 					}
@@ -138,7 +167,6 @@ public class EnemyFormationController : MonoBehaviour
 						_orderedColumns[n].ResetColumn();
 					}
 
-					_columnsDestroyed = 0;
 					_rightMostActiveColumn = _orderedColumns.Length - 1;
 					_leftMostActiveColumn = 0;
 					_activeColumns = new List<EnemyColumn>(_orderedColumns);

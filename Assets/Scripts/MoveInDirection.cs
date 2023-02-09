@@ -1,8 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Simple script to move transform in a cardinal direction at given speed.
+ * Not designed for use with RB-based physics objects.
+ */
 public class MoveInDirection : MonoBehaviour
 {
     [SerializeField] private float _speed = 1f;

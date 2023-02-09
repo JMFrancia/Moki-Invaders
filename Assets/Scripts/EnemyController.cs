@@ -17,14 +17,14 @@ public class EnemyController : MonoBehaviour
 
     public void FireShot()
     {
-        Instantiate(_shotPrefab, transform.position - new Vector3(0, .3f, 0), Quaternion.identity);
+        Instantiate(_shotPrefab, transform.position, Quaternion.identity);
     }
 
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (!Alive)
             return;
-        if (col.CompareTag(Constants.Tags.SHOT))
+        if (col.gameObject.layer == LayerMask.NameToLayer(Constants.Layers.PLAYER_SHOT))
         {
             Die();
             Destroy(col.gameObject); //Destroy shot
