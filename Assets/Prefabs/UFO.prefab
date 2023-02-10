@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 1028340555990030978}
   - component: {fileID: 1028340555990030981}
   - component: {fileID: 4249526808512866496}
+  - component: {fileID: 4262552605202290509}
+  - component: {fileID: 2693608358420131200}
   m_Layer: 8
   m_Name: UFO
   m_TagString: Untagged
@@ -176,3 +178,29 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &4262552605202290509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1028340555990030991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be4fd71d5fef741b6ac12f6bfa5e8c4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _poolableType: 3
+--- !u!114 &2693608358420131200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1028340555990030991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b923a8747dc4e54812bd278c5c0fda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _explosionPrefab: {fileID: 3484229493986213014, guid: ab3aebd45672648ff831d96be80cedc8, type: 3}

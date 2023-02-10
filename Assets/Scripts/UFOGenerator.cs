@@ -79,7 +79,8 @@ public class UFOGenerator : MonoBehaviour
         float launchHeight = transform.position.y +
                              UnityEngine.Random.Range(-.5f * _possibleLaunchHeight, .5f * _possibleLaunchHeight);
         Vector3 launchPosition = new Vector3(transform.position.x, launchHeight, transform.position.z);
-        Instantiate(_ufoPrefab, launchPosition, Quaternion.identity);
+        GameObject UFO = ObjectPoolManager.Get(_ufoPrefab, true);
+        UFO.transform.position = launchPosition;
         EventManager.TriggerEvent(Constants.Events.UFO_LAUNCHED);
     }
 }

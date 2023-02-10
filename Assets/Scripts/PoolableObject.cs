@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 
@@ -10,7 +8,9 @@ public class PoolableObject : MonoBehaviour
 {
     [Serializable] public enum PoolableType {
         PlayerShot,
-        EnemyShot
+        EnemyShot,
+        Explosion,
+        UFO
     }
 
     [SerializeField] PoolableType _poolableType;

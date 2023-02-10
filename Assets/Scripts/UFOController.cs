@@ -17,6 +17,6 @@ public class UFOController : MonoBehaviour
     void Die()
     {
         EventManager.TriggerEvent(Constants.Events.UFO_DESTROYED);
-        Destroy(gameObject);
+        ObjectPoolManager.Release(gameObject, true);
     }
 }

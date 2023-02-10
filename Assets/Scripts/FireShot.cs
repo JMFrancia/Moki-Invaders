@@ -6,7 +6,7 @@ public class FireShot : MonoBehaviour
         
     public void Fire()
     {
-        GameObject shot = ObjectPoolManager.Get(_shotPrefab);
+        GameObject shot = ObjectPoolManager.Get(_shotPrefab, true);
         shot.transform.position = transform.position;
     }
 }
