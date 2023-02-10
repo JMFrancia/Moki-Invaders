@@ -1,22 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(DieOnContact))]
 public class UFOController : MonoBehaviour
 {
-    // Refactor to Destroy On Shot w/ event
-    private void OnTriggerEnter2D(Collider2D col)
+    private void Awake()
     {
-        if (col.gameObject.layer == LayerMask.NameToLayer(Constants.Layers.PLAYER_SHOT))
-        {
-            Die();
-            ObjectPoolManager.Release(col.gameObject); //Destroy shot
-        }
+        GetComponent<DieOnContact>().OnDeath += Die;
     }
 
     void Die()
     {
         EventManager.TriggerEvent(Constants.Events.UFO_DESTROYED);
-        ObjectPoolManager.Release(gameObject, true);
     }
 }

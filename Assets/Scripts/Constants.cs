@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,5 +30,13 @@ public static class Constants
         public const string PLAYER = "Player";
         public const string ENEMY_SHOT = "EnemyShot";
         public const string PLAYER_SHOT = "PlayerShot";
+        
+        public enum LayerEnum
+        {
+            Enemy,
+            Player,
+            EnemyShot,
+            PlayerShot
+        }
     }
 }

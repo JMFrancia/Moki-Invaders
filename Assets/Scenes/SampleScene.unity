@@ -1241,7 +1241,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab6496ad3ed7647e694012d5f3c3d785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _showErrorMessages: 1
+  _showErrorMessages: 0
   _poolData:
   - poolObject: {fileID: 7958048551249663780, guid: d42166b05a99d4153bb37c8e1d2e8af3, type: 3}
     type: 0
@@ -1868,6 +1868,7 @@ GameObject:
   - component: {fileID: 1808840680}
   - component: {fileID: 1808840681}
   - component: {fileID: 1808840682}
+  - component: {fileID: 1808840683}
   m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
@@ -1887,7 +1888,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ba21520d63c7462a8f18b29d1b67450, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shotRate: 0.2
+  _shotRate: 100
 --- !u!212 &1808840677
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2028,6 +2029,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _explosionPrefab: {fileID: 3484229493986213014, guid: ab3aebd45672648ff831d96be80cedc8, type: 3}
+--- !u!114 &1808840683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1808840675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd723c434de914ef8aa4d661cd277c8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _checkTriggers: 1
+  _checkCollisions: 1
+  _deathBehavior: 2
+  _contacts:
+  - Layer: 0
+    MutualDestruction: 0
+  - Layer: 2
+    MutualDestruction: 1
 --- !u!1 &1865911959
 GameObject:
   m_ObjectHideFlags: 0

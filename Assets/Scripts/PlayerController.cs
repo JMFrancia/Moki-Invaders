@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[RequireComponent(typeof(FireShot))]
+[RequireComponent(typeof(FireShot), typeof(DieOnContact))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float _shotRate = 1f;
@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _renderer = GetComponent<Renderer>();
         _fireShot = GetComponent<FireShot>();
+        GetComponent<DieOnContact>().OnDeath += Die;
         
         float spriteHalfWidth = GetComponent<Renderer>().bounds.size.x / 2f;
         _minPosX = Camera.main.ViewportToWorldPoint(Vector3.zero).x + spriteHalfWidth;
@@ -55,23 +56,6 @@ public class PlayerController : MonoBehaviour
             return;
         
         SetPosition(GetPlayerInput());
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.layer == LayerMask.NameToLayer(Constants.Layers.ENEMY_SHOT) && other.gameObject.activeInHierarchy)
-        {
-           Die();
-           ObjectPoolManager.Release(other.gameObject);
-        }
-    }
-
-    private void OnCollisionEnter2D(Collision2D col)
-    {
-        if (col.gameObject.layer == LayerMask.NameToLayer(Constants.Layers.ENEMY) && col.gameObject.activeInHierarchy)
-        {
-            Die();
-        }
     }
 
     void Reset()

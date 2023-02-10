@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 4249526808512866496}
   - component: {fileID: 4262552605202290509}
   - component: {fileID: 2693608358420131200}
+  - component: {fileID: 5800647381146559908}
   m_Layer: 8
   m_Name: UFO
   m_TagString: Untagged
@@ -204,3 +205,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _explosionPrefab: {fileID: 3484229493986213014, guid: ab3aebd45672648ff831d96be80cedc8, type: 3}
+--- !u!114 &5800647381146559908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1028340555990030991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd723c434de914ef8aa4d661cd277c8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _checkTriggers: 1
+  _checkCollisions: 1
+  _deathBehavior: 0
+  _contacts:
+  - Layer: 3
+    MutualDestruction: 1
