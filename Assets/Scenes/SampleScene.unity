@@ -885,12 +885,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c973031a0b5bc4f648151642bb38e942, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shotSpeed: 1
-  _minStepSpeed: 1.5
-  _maxStepSpeed: 0.01
+  _minShotSpeed: 1.5
+  _maxShotSpeed: 0.75
+  _minStepSpeed: 0.5
+  _maxStepSpeed: 0.075
+  _lastEnemySpeedMultiplier: 3
   _stepHorizontalDistance: 0.15
   _stepVerticalDistance: 0.25
-  _debugShowBoundaryGizmos: 0
+  _debugShowBoundaryGizmos: 1
 --- !u!1 &928040255
 GameObject:
   m_ObjectHideFlags: 0

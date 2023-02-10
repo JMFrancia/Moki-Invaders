@@ -9,9 +9,11 @@ using Random = System.Random;
 
 public class EnemyFormationController : MonoBehaviour
 {
-				[SerializeField] private float _shotSpeed = .01f;
+				[SerializeField] private float _minShotSpeed = 1.5f;
+				[SerializeField] private float _maxShotSpeed = .04f;
 				[SerializeField] private float _minStepSpeed = 1.5f;
 				[SerializeField] private float _maxStepSpeed = .15f;
+				[SerializeField] private float _lastEnemySpeedMultiplier = 2f;
 				[SerializeField] private float _stepHorizontalDistance = .5f;
 				[SerializeField] private float _stepVerticalDistance = .5f;
 				[SerializeField] private bool _debugShowBoundaryGizmos = false;
@@ -28,6 +30,7 @@ public class EnemyFormationController : MonoBehaviour
 				private float _halfEnemySpriteWidth;
 				private bool _active;
 				private float _stepSpeed;
+				private float _shotSpeed;
 				private int _enemiesDestroyed;
 				private int _totalEnemies;
 
@@ -61,6 +64,7 @@ public class EnemyFormationController : MonoBehaviour
 					ResetAllEnemies();
 					_active = true;
 					_stepSpeed = _minStepSpeed;
+					_shotSpeed = _minShotSpeed;
 					_enemiesDestroyed = 0;
 				}
 				private void Awake()
@@ -90,7 +94,7 @@ public class EnemyFormationController : MonoBehaviour
 
 				private void OnDrawGizmos()
 				{
-					if (_debugShowBoundaryGizmos)
+					if (_debugShowBoundaryGizmos && _active)
 					{
 						Gizmos.color = Color.green;
 						Gizmos.DrawCube(new Vector3(GetLeftBoundaryEdge(), transform.position.y, transform.position.z), Vector3.one * _halfEnemySpriteWidth * 2);
@@ -108,7 +112,20 @@ public class EnemyFormationController : MonoBehaviour
 				void OnEnemyDestroyed()
 				{
 					_enemiesDestroyed++;
-					_stepSpeed = Mathf.Lerp(_maxStepSpeed, _minStepSpeed, 1 - (float)_enemiesDestroyed / (float)_totalEnemies);
+					Debug.Log("Enemies destroyed: " + _enemiesDestroyed + " / " + _totalEnemies);
+					Debug.Log("Enemies left: " + (_totalEnemies - _enemiesDestroyed));
+					if ((_totalEnemies - _enemiesDestroyed) == 1)
+					{
+						_stepSpeed = _maxStepSpeed / _lastEnemySpeedMultiplier;
+						Debug.Log("Final speed: " + _stepSpeed);
+					}
+					else
+					{
+						float inverseEnemiesDestroyedNormalized = 1 - ((float)_enemiesDestroyed / (float)_totalEnemies);
+						_stepSpeed = Mathf.Lerp(_maxStepSpeed, _minStepSpeed, inverseEnemiesDestroyedNormalized);
+						_shotSpeed = Mathf.Lerp(_maxShotSpeed, _minShotSpeed, inverseEnemiesDestroyedNormalized);
+					}
+
 					Debug.Log("New step speed: " + _stepSpeed);
 				}
 
@@ -143,20 +160,20 @@ public class EnemyFormationController : MonoBehaviour
 
 				void RecalculateColumnBoundaries()
 				{
-					for (int n = _leftMostActiveColumn; n < TotalColumns; n++)
+					for (;_leftMostActiveColumn < TotalColumns; _leftMostActiveColumn++)
 					{
-						if (_orderedColumns[n].IsColumnEmpty())
+						if (!_orderedColumns[_leftMostActiveColumn].IsColumnEmpty())
 						{
-							_leftMostActiveColumn++;
+							break;
 						}
 					}
 					Debug.Log("New left boundary column: " + _leftMostActiveColumn);
 
-					for (int n = _rightMostActiveColumn; n >= 0; n--)
+					for (;_rightMostActiveColumn >= 0; _rightMostActiveColumn--)
 					{
-						if (_orderedColumns[n].IsColumnEmpty())
+						if (!_orderedColumns[_rightMostActiveColumn].IsColumnEmpty())
 						{
-							_rightMostActiveColumn--;
+							break;
 						}
 					}
 					Debug.Log("New right boundary column: " + _rightMostActiveColumn);
