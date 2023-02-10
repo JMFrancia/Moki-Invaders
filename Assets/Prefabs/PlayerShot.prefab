@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 7958048551249663779}
   - component: {fileID: 3331451088371052788}
   - component: {fileID: 3454464310464040305}
+  - component: {fileID: 9129470085995821306}
+  - component: {fileID: 3950744665933719538}
   m_Layer: 6
   m_Name: PlayerShot
   m_TagString: Untagged
@@ -101,6 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 0.01
   _direction: 0
+  _useRigidBodyIfAvailable: 0
 --- !u!114 &3331451088371052788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,6 +116,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7d0fd92b53d9470585e87b982fb7f50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _startOffscreen: 0
 --- !u!70 &3454464310464040305
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -129,3 +133,28 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 1.9999999}
   m_Direction: 0
+--- !u!114 &9129470085995821306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7958048551249663780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f31ac4a47a534dc1b7a21ba7a443e68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3950744665933719538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7958048551249663780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be4fd71d5fef741b6ac12f6bfa5e8c4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _poolableType: 0

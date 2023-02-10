@@ -20,18 +20,18 @@ public class GameManager : MonoBehaviour
     void ShowStartScreen()
     {
         _startScreenParent.SetActive(true);
-        //_gameoverScreenParent.SetActive(false);
+        _gameoverScreenParent.SetActive(false);
     }
 
     void ShowGameScreen()
     {
         _startScreenParent.SetActive(false);
-        //_gameoverScreenParent.SetActive(false);
+        _gameoverScreenParent.SetActive(false);
     }
 
     void ShowGameOverScreen()
     {
-        //_gameoverScreenParent.SetActive(true);
+        _gameoverScreenParent.SetActive(true);
         _startScreenParent.SetActive(false);
     }
     
@@ -57,8 +57,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Game over!");   
         EventManager.TriggerEvent(Constants.Events.GAME_OVER, false);
-        //ShowGameOverScreen();
-        ShowStartScreen();
+        ShowGameOverScreen();
     }
 
     void OnAllEnemiesDestroyed()

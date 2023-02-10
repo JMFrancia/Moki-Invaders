@@ -32,8 +32,10 @@ public class DestroyOffScreen : MonoBehaviour
             return;
         }
 
-        if (IsOffScreen()) 
-            Destroy(gameObject);
+        if (IsOffScreen())
+        {
+            ObjectPoolManager.Release(gameObject, true);
+        }
     }
 
     bool IsOffScreen()

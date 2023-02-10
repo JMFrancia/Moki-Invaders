@@ -6,8 +6,7 @@ using UnityEngine;
 public class EnemyColumn : MonoBehaviour
 {
     public Action<EnemyColumn> ColumnDestroyed;
-    
-    public int EnemyCount => _enemies.Count - _destroyedEnemies;
+    public int EnemyCount => _enemies?.Count - _destroyedEnemies ?? GetComponentsInChildren<EnemyController>().Length;
 
     private List<EnemyController> _enemies;
     private int _destroyedEnemies;

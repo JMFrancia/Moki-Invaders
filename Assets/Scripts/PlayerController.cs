@@ -1,17 +1,13 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using Unity.Burst.CompilerServices;
 using UnityEngine;
 
+[RequireComponent(typeof(FireShot))]
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private GameObject _shotPrefab;
     [SerializeField] private float _shotRate = 1f;
 
     private Rigidbody2D _rigidbody2D;
     private Renderer _renderer;
+    private FireShot _fireShot;
     
     private float _minPosX;
     private float _maxPosX;
@@ -37,6 +33,7 @@ public class PlayerController : MonoBehaviour
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _renderer = GetComponent<Renderer>();
+        _fireShot = GetComponent<FireShot>();
         
         float spriteHalfWidth = GetComponent<Renderer>().bounds.size.x / 2f;
         _minPosX = Camera.main.ViewportToWorldPoint(Vector3.zero).x + spriteHalfWidth;
@@ -62,16 +59,16 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.layer == LayerMask.NameToLayer(Constants.Layers.ENEMY_SHOT))
+        if (other.gameObject.layer == LayerMask.NameToLayer(Constants.Layers.ENEMY_SHOT) && other.gameObject.activeInHierarchy)
         {
            Die();
-           Destroy(other.gameObject);
+           ObjectPoolManager.Release(other.gameObject);
         }
     }
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.gameObject.layer == LayerMask.NameToLayer(Constants.Layers.ENEMY))
+        if (col.gameObject.layer == LayerMask.NameToLayer(Constants.Layers.ENEMY) && col.gameObject.activeInHierarchy)
         {
             Die();
         }
@@ -96,15 +93,10 @@ public class PlayerController : MonoBehaviour
         _timeSinceLastShot += Time.deltaTime;
         if (_timeSinceLastShot >= _shotRate)
         {
-            FireShot();
+            _fireShot.Fire();
+            EventManager.TriggerEvent(Constants.Events.PLAYER_SHOT_FIRED);
             _timeSinceLastShot = 0f;
         }
-    }
-
-    void FireShot()
-    {
-        Instantiate(_shotPrefab, transform.position, Quaternion.identity);
-        EventManager.TriggerEvent(Constants.Events.PLAYER_SHOT_FIRED);
     }
 
     Vector3 GetPlayerInput()

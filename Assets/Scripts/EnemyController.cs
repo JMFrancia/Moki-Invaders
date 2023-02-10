@@ -1,15 +1,19 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(FireShot))]
 public class EnemyController : MonoBehaviour
 {
-    [SerializeField] private GameObject _shotPrefab;
-
     public bool Alive => gameObject.activeInHierarchy;
     public Action OnDestroyed;
-    
+
+    private FireShot _fireShot;
+
+    private void Awake()
+    {
+        _fireShot = GetComponent<FireShot>();
+    }
+
     public void ResetEnemy()
     {
         gameObject.SetActive(true);
@@ -17,17 +21,18 @@ public class EnemyController : MonoBehaviour
 
     public void FireShot()
     {
-        Instantiate(_shotPrefab, transform.position, Quaternion.identity);
+        _fireShot.Fire();
+        EventManager.TriggerEvent(Constants.Events.ENEMY_SHOT_FIRED);
     }
 
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (!Alive)
             return;
-        if (col.gameObject.layer == LayerMask.NameToLayer(Constants.Layers.PLAYER_SHOT))
+        if (col.gameObject.layer == LayerMask.NameToLayer(Constants.Layers.PLAYER_SHOT) && col.gameObject.activeInHierarchy)
         {
+            ObjectPoolManager.Release(col.gameObject); //Destroy shot
             Die();
-            Destroy(col.gameObject); //Destroy shot
         }
     }
     

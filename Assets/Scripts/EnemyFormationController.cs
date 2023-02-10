@@ -76,7 +76,7 @@ public class EnemyFormationController : MonoBehaviour
 						_orderedColumns[n].ColumnDestroyed += OnColumnDestroyed;
 					}
 
-					_totalEnemies = GetComponentsInChildren<EnemyController>().Length;
+					_totalEnemies = _orderedColumns[0].EnemyCount * _orderedColumns.Length;
 
 					//Better way to get this than at runtime via multiple component searches?
 					_halfEnemySpriteWidth =
@@ -89,6 +89,7 @@ public class EnemyFormationController : MonoBehaviour
 				{
 					if (!_active)
 						return;
+					
 					UpdateShot();
 				}
 
@@ -106,18 +107,16 @@ public class EnemyFormationController : MonoBehaviour
 				{
 					if (!_active)
 						return;
+					
 					UpdateMove();
 				}
 
 				void OnEnemyDestroyed()
 				{
 					_enemiesDestroyed++;
-					Debug.Log("Enemies destroyed: " + _enemiesDestroyed + " / " + _totalEnemies);
-					Debug.Log("Enemies left: " + (_totalEnemies - _enemiesDestroyed));
 					if ((_totalEnemies - _enemiesDestroyed) == 1)
 					{
 						_stepSpeed = _maxStepSpeed / _lastEnemySpeedMultiplier;
-						Debug.Log("Final speed: " + _stepSpeed);
 					}
 					else
 					{
@@ -125,8 +124,6 @@ public class EnemyFormationController : MonoBehaviour
 						_stepSpeed = Mathf.Lerp(_maxStepSpeed, _minStepSpeed, inverseEnemiesDestroyedNormalized);
 						_shotSpeed = Mathf.Lerp(_maxShotSpeed, _minShotSpeed, inverseEnemiesDestroyedNormalized);
 					}
-
-					Debug.Log("New step speed: " + _stepSpeed);
 				}
 
 				void OnGameOver(bool win)
@@ -167,8 +164,6 @@ public class EnemyFormationController : MonoBehaviour
 							break;
 						}
 					}
-					Debug.Log("New left boundary column: " + _leftMostActiveColumn);
-
 					for (;_rightMostActiveColumn >= 0; _rightMostActiveColumn--)
 					{
 						if (!_orderedColumns[_rightMostActiveColumn].IsColumnEmpty())
@@ -176,7 +171,6 @@ public class EnemyFormationController : MonoBehaviour
 							break;
 						}
 					}
-					Debug.Log("New right boundary column: " + _rightMostActiveColumn);
 				}
 
 				void UpdateShot()

@@ -10,7 +10,7 @@ public class UFOController : MonoBehaviour
         if (col.gameObject.layer == LayerMask.NameToLayer(Constants.Layers.PLAYER_SHOT))
         {
             Die();
-            Destroy(col.gameObject); //Destroy shot
+            ObjectPoolManager.Release(col.gameObject); //Destroy shot
         }
     }
 
