@@ -14,10 +14,10 @@ GameObject:
   - component: {fileID: 1028340555990030979}
   - component: {fileID: 1028340555990030978}
   - component: {fileID: 1028340555990030981}
-  - component: {fileID: 4249526808512866496}
   - component: {fileID: 4262552605202290509}
   - component: {fileID: 2693608358420131200}
   - component: {fileID: 5800647381146559908}
+  - component: {fileID: 7465435826971137050}
   m_Layer: 8
   m_Name: UFO
   m_TagString: Untagged
@@ -34,7 +34,7 @@ Transform:
   m_GameObject: {fileID: 1028340555990030991}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.67, y: 3.36, z: 0}
-  m_LocalScale: {x: 0.4589, y: 0.15511388, z: 1}
+  m_LocalScale: {x: 3.7666, y: 3.7666, z: 3.7666}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -81,8 +81,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0, g: 1, b: 0.14668608, a: 1}
+  m_Sprite: {fileID: -574757077, guid: f884385ea04fd44fa8e1f9c10701be0b, type: 3}
+  m_Color: {r: 1, g: 0, b: 0.03915453, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -153,32 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startOffscreen: 1
---- !u!61 &4249526808512866496
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1028340555990030991}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  _buffer: 2
 --- !u!114 &4262552605202290509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,7 +179,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0b923a8747dc4e54812bd278c5c0fda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _explosionPrefab: {fileID: 3484229493986213014, guid: ab3aebd45672648ff831d96be80cedc8, type: 3}
+  _setExplosionColorToMatch: 1
+  _explosionPrefab: {fileID: 8281529649810089673, guid: 2334278d82deb48d181274a95e8a76a1, type: 3}
 --- !u!114 &5800647381146559908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,3 +199,29 @@ MonoBehaviour:
   _contacts:
   - Layer: 3
     MutualDestruction: 1
+--- !u!61 &7465435826971137050
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1028340555990030991}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.14, y: 0.07}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.14, y: 0.07}
+  m_EdgeRadius: 0

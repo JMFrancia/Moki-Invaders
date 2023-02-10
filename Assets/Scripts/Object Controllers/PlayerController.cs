@@ -8,11 +8,13 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rigidbody2D;
     private Renderer _renderer;
     private FireShot _fireShot;
+    private ExplodeOnDisable _exploder;
     
     private float _minPosX;
     private float _maxPosX;
     private float _timeSinceLastShot = 0f;
     private bool _active;
+
 
     private void OnEnable()
     {
@@ -34,6 +36,7 @@ public class PlayerController : MonoBehaviour
         _rigidbody2D = GetComponent<Rigidbody2D>();
         _renderer = GetComponent<Renderer>();
         _fireShot = GetComponent<FireShot>();
+        _exploder = GetComponent<ExplodeOnDisable>();
         GetComponent<DieOnContact>().OnDeath += Die;
         
         float spriteHalfWidth = GetComponent<Renderer>().bounds.size.x / 2f;
@@ -68,6 +71,7 @@ public class PlayerController : MonoBehaviour
     {
         _active = false;
         _renderer.enabled = false;
+        _exploder.Explode();
         EventManager.TriggerEvent(Constants.Events.PLAYER_DESTROYED);
     }
 

@@ -9,8 +9,10 @@ public class PoolableObject : MonoBehaviour
     [Serializable] public enum PoolableType {
         PlayerShot,
         EnemyShot,
-        Explosion,
-        UFO
+        EnemyExplosion,
+        UFO,
+        PlayerExplosion,
+        UFOExplosion
     }
 
     [SerializeField] PoolableType _poolableType;

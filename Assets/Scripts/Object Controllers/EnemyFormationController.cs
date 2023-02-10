@@ -33,6 +33,7 @@ public class EnemyFormationController : MonoBehaviour
 				private float _shotSpeed;
 				private int _enemiesDestroyed;
 				private int _totalEnemies;
+				private Vector3 _originalPos;
 
 				private void OnEnable()
 				{
@@ -66,6 +67,7 @@ public class EnemyFormationController : MonoBehaviour
 					_stepSpeed = _minStepSpeed;
 					_shotSpeed = _minShotSpeed;
 					_enemiesDestroyed = 0;
+					transform.position = _originalPos;
 				}
 				private void Awake()
 				{
@@ -82,6 +84,7 @@ public class EnemyFormationController : MonoBehaviour
 					_halfEnemySpriteWidth =
 						GetComponentInChildren<EnemyController>().GetComponent<SpriteRenderer>().bounds.size.x * .5f;
 
+					_originalPos = transform.position;
 					_active = false;
 				}
 

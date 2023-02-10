@@ -6,6 +6,7 @@ using UnityEngine;
 public class DestroyOffScreen : MonoBehaviour
 {
     [SerializeField] private bool _startOffscreen = false;
+    [SerializeField] private float _buffer = 2f;
     
     private Vector3 _minPos;
     private Vector3 _maxPos;
@@ -20,7 +21,7 @@ public class DestroyOffScreen : MonoBehaviour
 
         if (_startOffscreen)
         {
-            _active = false;
+            _active = IsOffScreen();
         }
     }
 
@@ -41,9 +42,9 @@ public class DestroyOffScreen : MonoBehaviour
     bool IsOffScreen()
     {
         Vector3 pos = transform.position; //loading into local memory for faster access
-        return pos.x > _maxPos.x ||
-               pos.y > _maxPos.y ||
-               pos.x < _minPos.x ||
-               pos.y < _minPos.y;
+        return pos.x > _maxPos.x + _buffer ||
+               pos.y > _maxPos.y + _buffer ||
+               pos.x < _minPos.x - _buffer ||
+               pos.y < _minPos.y - _buffer;
     }
 }
