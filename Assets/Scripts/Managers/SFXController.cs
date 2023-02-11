@@ -1,8 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * SFX Controller works with SFX Manager to activate audio clips according to in-game events
+ */
 [RequireComponent(typeof(SFXManager))]
 public class SFXController : MonoBehaviour
 {

@@ -1,5 +1,8 @@
 using UnityEngine;
 
+/*
+ * Allows game object to fire a shot
+ */
 public class FireShot : MonoBehaviour
 {
     [SerializeField] private GameObject _shotPrefab;

@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/*
+ * Destroys object on game over.
+ * TODO: Refactor with ability to choose any event from a drop-down, not just game over
+ */
 public class DestroyOnGameOver : MonoBehaviour
 {
     private void OnEnable()

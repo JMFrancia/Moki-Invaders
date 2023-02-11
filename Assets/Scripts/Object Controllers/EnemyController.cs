@@ -1,6 +1,9 @@
 using System;
 using UnityEngine;
 
+/*
+ * Controller class for a single enemy
+ */
 [RequireComponent(typeof(FireShot), typeof(DieOnContact))]
 public class EnemyController : MonoBehaviour
 {
@@ -9,23 +12,29 @@ public class EnemyController : MonoBehaviour
 
     private FireShot _fireShot;
 
-    private void Awake()
-    {
-        _fireShot = GetComponent<FireShot>();
-        GetComponent<DieOnContact>().OnDeath += Die;
-    }
-
+    /*
+     * Resets enemy (IE brings back to life)
+     */
     public void ResetEnemy()
     {
         gameObject.SetActive(true);
     }
 
+    /*
+     * Fires a shot from this enemy
+     */
     public void FireShot()
     {
         _fireShot.Fire();
         EventManager.TriggerEvent(Constants.Events.ENEMY_SHOT_FIRED);
     }
     
+    private void Awake()
+    {
+        _fireShot = GetComponent<FireShot>();
+        GetComponent<DieOnContact>().OnDeath += Die;
+    }
+
     private void Die()
     {
         OnDestroyed?.Invoke();

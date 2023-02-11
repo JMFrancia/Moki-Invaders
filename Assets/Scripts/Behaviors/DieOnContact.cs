@@ -2,12 +2,20 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Destroys game object when it comes into contact another object on given layer(s).
+ * Set MutualDestruction to true if the other object should be destroyed as well.
+ */
 [DisallowMultipleComponent]
 public class DieOnContact : MonoBehaviour
 {
+    [Tooltip("Check trigger-based collisions")]
     [SerializeField] private bool _checkTriggers = true;
+    [Tooltip("Check regular collisions")]
     [SerializeField] private bool _checkCollisions = true;
+    [Tooltip("Type of death: Destroy, Deactivate, or None (useful when allowing callback to handle death)")]
     [SerializeField] private DeathOptions _deathBehavior = DeathOptions.Destroy;
+    [Tooltip("Add a contact type for each layer you want to kill this game object")]
     [SerializeField] private ContactType[] _contacts;
 
     public Action OnDeath;
@@ -19,6 +27,7 @@ public class DieOnContact : MonoBehaviour
     private struct ContactType
     {
         public Constants.Layers.LayerEnum Layer;
+        [Tooltip("Will destroy colliding game object as well if true")]
         public bool MutualDestruction;
     }
 
@@ -35,7 +44,23 @@ public class DieOnContact : MonoBehaviour
         Initialize();
     }
 
-    void Initialize()
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(!_checkTriggers)
+            return;
+        
+        CheckContact(other.gameObject);
+    }
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        if (!_checkCollisions)
+            return;
+        
+        CheckContact(col.gameObject);
+    }
+    
+    private void Initialize()
     {
         List<string> allLayers = new List<string>();
         List<string> mdLayers = new List<string>();
@@ -51,22 +76,6 @@ public class DieOnContact : MonoBehaviour
 
         _contactLayerMask = LayerMask.GetMask(allLayers.ToArray());
         _mdLayerMask = LayerMask.GetMask(mdLayers.ToArray());
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if(!_checkTriggers)
-            return;
-        
-        CheckContact(other.gameObject);
-    }
-
-    private void OnCollisionEnter2D(Collision2D col)
-    {
-        if (!_checkCollisions)
-            return;
-        
-        CheckContact(col.gameObject);
     }
 
     void CheckContact(GameObject other)
@@ -85,6 +94,7 @@ public class DieOnContact : MonoBehaviour
         }
     }
 
+    //TODO: Move to a utilities class? 
     private bool MaskContainsLayer(LayerMask mask, int layer)
     {
         return mask == (mask | (1 << layer));

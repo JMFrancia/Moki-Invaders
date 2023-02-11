@@ -1,9 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+ * Score Manager keeps track of the player's score and updates the UI
+ */
 public class ScoreManager : MonoBehaviour
 {
     [SerializeField] private int _scorePerKill;

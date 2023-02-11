@@ -1,14 +1,13 @@
-using System;
 using UnityEngine;
 
 /*
  * Simple script to move transform in a cardinal direction at given speed.
- * Not designed for use with RB-based physics objects.
  */
 public class MoveInDirection : MonoBehaviour
 {
     [SerializeField] private float _speed = 1f;
     [SerializeField] private Direction _direction;
+    [Tooltip("If true, will attempt to use the object's rigidbody for motion")]
     [SerializeField] private bool _useRigidBodyIfAvailable = false;
 
     private Rigidbody2D _rigidbody2D; 

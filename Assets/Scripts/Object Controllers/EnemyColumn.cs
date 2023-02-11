@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
+/*
+ * Controls a column of enemies in the enemy formation
+ */
 public class EnemyColumn : MonoBehaviour
 {
     public Action<EnemyColumn> ColumnDestroyed;
@@ -11,6 +13,35 @@ public class EnemyColumn : MonoBehaviour
     private List<EnemyController> _enemies;
     private int _destroyedEnemies;
 
+    /*
+     * Resets all enemies in this column
+     */
+    public void ResetColumn()
+    {
+        for (int n = 0; n < _enemies.Count; n++)
+        {
+            _enemies[n].ResetEnemy();
+        }
+
+        _destroyedEnemies = 0;
+    }
+
+    /*
+     * Returns true if all enemies in this column destroyed
+     */
+    public bool IsColumnEmpty()
+    {
+        return _destroyedEnemies == _enemies.Count;
+    }
+
+    /*
+     * Fires a shot from the bottom enemy of this column
+     */
+    public void FireShot()
+    {
+        GetBottomEnemy()?.FireShot();
+    }
+    
     private void Awake()
     {
         //Iterating over childcount instead of using recursive GetComponentsInChildren() in order to guarantee child order
@@ -32,27 +63,6 @@ public class EnemyColumn : MonoBehaviour
         {
             ColumnDestroyed?.Invoke(this);
         }
-    }
-
-
-    public void ResetColumn()
-    {
-        for (int n = 0; n < _enemies.Count; n++)
-        {
-            _enemies[n].ResetEnemy();
-        }
-
-        _destroyedEnemies = 0;
-    }
-
-    public bool IsColumnEmpty()
-    {
-        return _destroyedEnemies == _enemies.Count;
-    }
-
-    public void FireShot()
-    {
-        GetBottomEnemy()?.FireShot();
     }
 
     private EnemyController GetBottomEnemy()

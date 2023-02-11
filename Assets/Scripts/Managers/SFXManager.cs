@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 /*
@@ -108,23 +107,34 @@ public class SFXManager : MonoBehaviour
         return false;
     }
 
+    /*
+     * Fade in a looping SFX
+     */
     public int FadeInLoopingSFX(AudioClip clip, float volume, float fadeTime, System.Action callback = null)
     {
         int result = PlayLoopingSFX(clip, 0f);
         StartCoroutine(FadeSFX(result, 0f, volume, fadeTime, callback));
         return result;
     }
-
+    /*
+     * Fade out a looping SFX of given ID
+     */
     public void FadeOutLoopingSFX(int id, float fadeTime, System.Action callback = null)
     {
         FadeOutSFX(id, fadeTime, callback);
     }
 
+    /*
+    * Fade out an SFX of given ID
+    */
     public void FadeOutSFX(int id, float fadeTime, System.Action callback = null)
     {
         StartCoroutine(FadeSFX(id, GetSFXVolume(id), 0f, fadeTime, callback));
     }
 
+    /*
+    * Fade in an SFX
+    */
     public int FadeInSFX(AudioClip clip, float volume, float fadeTime, System.Action callback = null)
     {
         int result = PlaySFX(clip, 0f);
@@ -132,6 +142,9 @@ public class SFXManager : MonoBehaviour
         return result;
     }
 
+    /*
+    * Play an SFX fading both in and out
+    */
     public void FadeInOutSFX(AudioClip clip, float volume, float fadeInTime, float fadeOutTime, System.Action callback = null) {
         int id = PlaySFX(clip, 0);
         StartCoroutine(FadeSFX(id, 0f, volume, fadeInTime));

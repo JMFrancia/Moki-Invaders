@@ -1,6 +1,8 @@
-using System;
 using UnityEngine;
 
+/*
+ * Controller class for the UFO
+ */
 [RequireComponent(typeof(DieOnContact))]
 public class UFOController : MonoBehaviour
 {

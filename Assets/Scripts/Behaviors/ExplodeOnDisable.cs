@@ -1,27 +1,25 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Generates explosion prefab on location when game object is disabled.
+ */
 public class ExplodeOnDisable : MonoBehaviour
 {
+    [Tooltip("If true, changes the sprite color of the explasion to match this gameobject's sprite color")]
     [SerializeField] private bool _setExplosionColorToMatch = true;
     [SerializeField] GameObject _explosionPrefab;
 
-    public void Explode()
+    private SpriteRenderer _renderer;
+
+    //For when you just gotta explode
+    public void ForceExplode()
     {
-        GameObject explosion = ObjectPoolManager.Get(_explosionPrefab, true);
-        explosion.transform.position = transform.position;
-        explosion.transform.parent = null;
+        Explode();
+    }
 
-        if (_setExplosionColorToMatch)
-        {
-            SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-            if (renderer == null)
-                return;
-
-            explosion.GetComponent<SpriteRenderer>().color = renderer.color;
-        }
+    private void Awake()
+    {
+        _renderer = GetComponent<SpriteRenderer>();
     }
 
     private void OnDisable()
@@ -30,5 +28,17 @@ public class ExplodeOnDisable : MonoBehaviour
             return;
         
         Explode();
+    }
+
+    private void Explode()
+    {
+        GameObject explosion = ObjectPoolManager.Get(_explosionPrefab, true);
+        explosion.transform.position = transform.position;
+        explosion.transform.parent = null;
+
+        if (_setExplosionColorToMatch && _renderer != null)
+        {
+            explosion.GetComponent<SpriteRenderer>().color = _renderer.color;
+        }
     }
 }

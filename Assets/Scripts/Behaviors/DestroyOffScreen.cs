@@ -1,11 +1,14 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Destroys game object if it goes offscreen.
+ * Includes options for starting offscreen, and for adding buffer zone.
+ */
 public class DestroyOffScreen : MonoBehaviour
 {
+    [Tooltip("If true, will start checking if off-screen until object is on screen")]
     [SerializeField] private bool _startOffscreen = false;
+    [Tooltip("Buffer area around game object, for dealing with large or slow sprites")]
     [SerializeField] private float _buffer = 2f;
     
     private Vector3 _minPos;
@@ -38,7 +41,7 @@ public class DestroyOffScreen : MonoBehaviour
             ObjectPoolManager.Release(gameObject, true);
         }
     }
-
+    
     bool IsOffScreen()
     {
         Vector3 pos = transform.position; //loading into local memory for faster access

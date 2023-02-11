@@ -1,9 +1,14 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
+/*
+ * Controller class for the player object
+ */
 [RequireComponent(typeof(FireShot), typeof(DieOnContact))]
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float _shotRate = 1f;
+    [Tooltip("Time between automatic shots")]
+    [FormerlySerializedAs("_shotRate")] [SerializeField] private float _shotTime = 1f;
 
     private Rigidbody2D _rigidbody2D;
     private Renderer _renderer;
@@ -14,8 +19,7 @@ public class PlayerController : MonoBehaviour
     private float _maxPosX;
     private float _timeSinceLastShot = 0f;
     private bool _active;
-
-
+    
     private void OnEnable()
     {
         EventManager.StartListening(Constants.Events.GAME_START, OnGameStart);
@@ -27,17 +31,7 @@ public class PlayerController : MonoBehaviour
         EventManager.StopListening(Constants.Events.GAME_START, OnGameStart);
         EventManager.StopListening(Constants.Events.GAME_OVER, OnGameOver);
     }
-
-    void OnGameStart()
-    {
-        Reset();
-    }
-
-    void OnGameOver(bool win)
-    {
-        _active = false;
-    }
-
+    
     private void Awake()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
@@ -46,12 +40,13 @@ public class PlayerController : MonoBehaviour
         _exploder = GetComponent<ExplodeOnDisable>();
         GetComponent<DieOnContact>().OnDeath += Die;
         
+        //TODO: Both this and Enemy Formation are doing calculations based on screen edges. Refactor those to common utility class.
         float spriteHalfWidth = GetComponent<Renderer>().bounds.size.x / 2f;
         _minPosX = Camera.main.ViewportToWorldPoint(Vector3.zero).x + spriteHalfWidth;
         _maxPosX = Camera.main.ViewportToWorldPoint(Vector3.one).x - spriteHalfWidth;
         _active = false;
     }
-
+    
     private void Update()
     {
         if (!_active)
@@ -68,6 +63,16 @@ public class PlayerController : MonoBehaviour
         SetPosition(GetPlayerInput());
     }
 
+    private void OnGameStart()
+    {
+        Reset();
+    }
+
+    private void OnGameOver(bool win)
+    {
+        _active = false;
+    }
+
     void Reset()
     {
         _active = true;
@@ -78,15 +83,17 @@ public class PlayerController : MonoBehaviour
     {
         _active = false;
         _renderer.enabled = false;
-        _exploder.Explode();
+        _exploder.ForceExplode();
         EventManager.TriggerEvent(Constants.Events.PLAYER_DESTROYED);
     }
 
+    /*
+     * Checks when to fire shot and gives order to do so
+     */
     void CheckToFireShot()
     {
-        //Choosing to do it this way instead of using a coroutine to reduce overhead
         _timeSinceLastShot += Time.deltaTime;
-        if (_timeSinceLastShot >= _shotRate)
+        if (_timeSinceLastShot >= _shotTime)
         {
             _fireShot.Fire();
             EventManager.TriggerEvent(Constants.Events.PLAYER_SHOT_FIRED);
@@ -94,6 +101,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /*
+     * Grabs control input from mouse or screen touch
+     */
     Vector3 GetPlayerInput()
     {
         Vector3 result = transform.position;
@@ -106,6 +116,10 @@ public class PlayerController : MonoBehaviour
 #endif
         return result;
     }
+    
+    /*
+     * Sets player position, clamped to screen width
+     */
     void SetPosition(Vector3 pos)
     {
         pos = new Vector3(Mathf.Clamp(pos.x, _minPosX, _maxPosX), transform.position.y, transform.position.z);

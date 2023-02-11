@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/*
+ * Simple component to set animator speed.
+ * Makes it easy to set or change speeds on multiple game objects from the inspector.
+ */
 [RequireComponent(typeof(Animator))]
 public class SetAnimationSpeed : MonoBehaviour
 {

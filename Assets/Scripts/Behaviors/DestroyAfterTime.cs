@@ -1,7 +1,9 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
+/*
+ * Destroys Game Object after given period of time
+ */
 public class DestroyAfterTime : MonoBehaviour
 {
     [SerializeField] private float _seconds = 5f;
