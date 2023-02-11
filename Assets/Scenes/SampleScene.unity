@@ -1909,6 +1909,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _showDebugMessages: 0
+  _playSFX: 1
+  _playMusic: 1
+  _sfxVolume: 0.25
   _gameStartSFX: {fileID: 0}
   _enemyKillSFX: {fileID: 8300000, guid: 66e92ceb310f5442da3c3c3bfe6ecec9, type: 3}
   _playerKillSFX: {fileID: 8300000, guid: f90da03f8f07041e888ec72e191cf73c, type: 3}
@@ -1917,6 +1920,14 @@ MonoBehaviour:
   _enemyShotSFX: {fileID: 0}
   _UFOSFX: {fileID: 8300000, guid: 106f9b5758ae64662960262203dde270, type: 3}
   _victorySFX: {fileID: 8300000, guid: 640960ec1da114d41896faa71f2f5e32, type: 3}
+  _musicVolume: 1.5
+  _minTempo: 1.25
+  _maxTempo: 0.05
+  _notes:
+  - {fileID: 8300000, guid: 759cb943a87d34b88ae8c3cf146eb7e0, type: 3}
+  - {fileID: 8300000, guid: 058ce2a9c56f34d2997d76dd0d269fce, type: 3}
+  - {fileID: 8300000, guid: 66aace456666e43ac8d92bb4fdcf9b43, type: 3}
+  - {fileID: 8300000, guid: 014dc9ad6980c4c7e9623e951dae8125, type: 3}
 --- !u!114 &1513118802
 MonoBehaviour:
   m_ObjectHideFlags: 0

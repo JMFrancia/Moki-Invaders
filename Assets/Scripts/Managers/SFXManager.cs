@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +17,51 @@ public class SFXManager : MonoBehaviour
     Dictionary<int, AudioSource> _activeSources;
     Dictionary<int, Coroutine> _activeCoroutines;
     Dictionary<int, int> _sequentialActiveSources;
+
+    private List<LoopingSFXSequence> _loopingSfxSequences;
+    private Dictionary<Guid, LoopingSFXSequence> _loopingSequenceDict;
+
+    /*
+     * Subclass for managing looping SFX sequences
+     */
+    private class LoopingSFXSequence
+    {
+        public bool NextSFXReady => _nextSFXReady;
+        public float TimeBetween;
+        public float Volume;
+        public Guid InstanceID {get; private set;}
+        
+        private CircularQueue<AudioClip> _sequence;
+
+        private float _timeSinceLastClip;
+        private bool _nextSFXReady;
+
+        public LoopingSFXSequence(AudioClip[] sequence, float timeBetween, float volume)
+        {
+            _sequence = new CircularQueue<AudioClip>(sequence);
+            TimeBetween = timeBetween;
+            _nextSFXReady = true;
+            InstanceID = new Guid();
+            _timeSinceLastClip = 0f;
+            Volume = volume;
+        }
+
+        public void UpdateTime(float deltaTime)
+        {
+            _timeSinceLastClip += deltaTime;
+            if (_timeSinceLastClip > TimeBetween)
+            {
+                _nextSFXReady = true;
+                _timeSinceLastClip = 0f;
+            }
+        }
+
+        public AudioClip GetNextSFX()
+        {
+            _nextSFXReady = false;
+            return _sequence.Next();
+        }
+    }
 
     /*
      * Returns volume of SFX with given ID
@@ -150,6 +196,58 @@ public class SFXManager : MonoBehaviour
         StartCoroutine(FadeSFX(id, 0f, volume, fadeInTime));
         StartCoroutine(StartFadeoutAtEnd(id, fadeOutTime, callback));
     }
+    
+    /*
+     * Play a sequence of audioclips in a loop, separated by timeBetween
+     * Returns Guid for adjusting later
+     */
+    public Guid PlayLoopingSequence(AudioClip[] sequence, float timeBetween, float volume = 1f)
+    {
+        LoopingSFXSequence seq = new LoopingSFXSequence(sequence, timeBetween, volume);
+        _loopingSfxSequences.Add(seq);
+        _loopingSequenceDict[seq.InstanceID] = seq;
+        return seq.InstanceID;
+    }
+
+    /*
+     * Stop looping SFX sequence with given sequence ID
+     */
+    public void StopLoopingSequence(Guid sequenceID)
+    {
+        _loopingSequenceDict.Remove(sequenceID);
+        for (int n = 0; n < _loopingSfxSequences.Count; n++)
+        {
+            if (_loopingSfxSequences[n].InstanceID == sequenceID)
+            {
+                _loopingSfxSequences.RemoveAt(n);
+            }
+        }
+    }
+
+    /*
+     * Adjust the time between clips for a looping SFX sequence with given sequenceID
+     */
+    public void ChangeLoopingSequenceTempo(Guid sequenceID, float newTimeBetween)
+    {
+        _loopingSequenceDict[sequenceID].TimeBetween = newTimeBetween;
+    }
+
+    void Update()
+    {
+        UpdateLoopingSFXSequences();
+    }
+
+    void UpdateLoopingSFXSequences()
+    {
+        foreach (var seq in _loopingSfxSequences)
+        {
+            seq.UpdateTime(Time.deltaTime);
+            if (seq.NextSFXReady)
+            {
+                PlaySFX(seq.GetNextSFX(), seq.Volume);
+            }
+        }
+    }
 
     IEnumerator StartFadeoutAtEnd(int id, float fadeTime, System.Action callback = null) {
         yield return new WaitForSeconds(_activeSources[id].clip.length - fadeTime);
@@ -197,6 +295,8 @@ public class SFXManager : MonoBehaviour
         _activeSources = new Dictionary<int, AudioSource>();
         _activeCoroutines = new Dictionary<int, Coroutine>();
         _sequentialActiveSources = new Dictionary<int, int>();
+        _loopingSfxSequences = new List<LoopingSFXSequence>();
+        _loopingSequenceDict = new Dictionary<Guid, LoopingSFXSequence>();
         for (int n = 0; n < _nAudiosources; n++)
         {
             AddAudioSource();

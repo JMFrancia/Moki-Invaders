@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 /*
@@ -120,16 +121,19 @@ public class EnemyFormationController : MonoBehaviour
     void OnEnemyDestroyed()
     {
         _enemiesDestroyed++;
+        float percentEnemiesDestroyed = (float)_enemiesDestroyed / (float)_totalEnemies;
+        
         if ((_totalEnemies - _enemiesDestroyed) == 1)
         {
             _stepSpeed = _minStepTime / _lastEnemySpeedMultiplier;
         }
         else
         {
-            float inverseEnemiesDestroyedNormalized = 1 - ((float)_enemiesDestroyed / (float)_totalEnemies);
+            float inverseEnemiesDestroyedNormalized = 1 - percentEnemiesDestroyed;
             _stepSpeed = Mathf.Lerp(_minStepTime, _maxStepTime, inverseEnemiesDestroyedNormalized);
             _shotSpeed = Mathf.Lerp(_minShotTime, _maxShotTime, inverseEnemiesDestroyedNormalized);
         }
+        EventManager.TriggerEvent(Constants.Events.ENEMY_FORMATION_DECREASED, percentEnemiesDestroyed);
     }
 
     void OnGameOver(bool win)
