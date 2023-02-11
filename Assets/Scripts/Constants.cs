@@ -16,6 +16,7 @@ public static class Constants
         public const string GAME_START = "GameStart";
         public const string UFO_LAUNCHED = "UFOLaunched";
         public const string UFO_DESTROYED = "AppStart";
+        public const string UFO_ESCAPED = "UfoEscape";
     }
 
     public static class Tags

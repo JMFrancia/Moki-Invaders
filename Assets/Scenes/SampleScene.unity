@@ -1291,7 +1291,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1919261132}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1088258263
 MonoBehaviour:
@@ -1449,8 +1449,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _possibleLaunchHeight: 2.02
-  _minUFOTime: 1
-  _maxUFOTime: 3
+  _minUFOTime: 5
+  _maxUFOTime: 15
   _ufoPrefab: {fileID: 1028340555990030991, guid: 42fe2e7c422404b4e8958795da9f5596, type: 3}
   _debugDrawLaunchRangeGizmos: 1
 --- !u!1001 &1339310178
@@ -1863,6 +1863,74 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1b8d662a1768b41feb1797a4924803e3, type: 3}
+--- !u!1 &1513118799
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1513118800}
+  - component: {fileID: 1513118802}
+  - component: {fileID: 1513118801}
+  m_Layer: 0
+  m_Name: SFX Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1513118800
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1513118799}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1919261132}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1513118801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1513118799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cb6e5923368240ab8e67e5f011a9b42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _showDebugMessages: 0
+  _gameStartSFX: {fileID: 0}
+  _enemyKillSFX: {fileID: 8300000, guid: 66e92ceb310f5442da3c3c3bfe6ecec9, type: 3}
+  _playerKillSFX: {fileID: 8300000, guid: f90da03f8f07041e888ec72e191cf73c, type: 3}
+  _UFOKillSFX: {fileID: 8300000, guid: 4ea78e6a7422a4e36b261f7ae1d87fd3, type: 3}
+  _playerShotSFX: {fileID: 8300000, guid: 11a77b2fcd54f413b99a852419721be7, type: 3}
+  _enemyShotSFX: {fileID: 0}
+  _UFOSFX: {fileID: 8300000, guid: 106f9b5758ae64662960262203dde270, type: 3}
+  _victorySFX: {fileID: 8300000, guid: 640960ec1da114d41896faa71f2f5e32, type: 3}
+--- !u!114 &1513118802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1513118799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9382d761b7b904e06a9a2ceecdf33880, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _nAudiosources: 10
+  _expandSize: 1
 --- !u!1 &1597320550
 GameObject:
   m_ObjectHideFlags: 0
@@ -2333,6 +2401,7 @@ Transform:
   m_Children:
   - {fileID: 1970812500}
   - {fileID: 777844427}
+  - {fileID: 1513118800}
   - {fileID: 1088258262}
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -2471,6 +2540,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startScreenParent: {fileID: 21974231}
   _gameoverScreenParent: {fileID: 1990961074}
+  _gameoverText: {fileID: 1597320552}
 --- !u!4 &1970812500
 Transform:
   m_ObjectHideFlags: 0

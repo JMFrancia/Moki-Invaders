@@ -32,7 +32,7 @@ public class MoveInDirection : MonoBehaviour
         _direction = dir;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         MoveDirection(_direction, _speed);
     }

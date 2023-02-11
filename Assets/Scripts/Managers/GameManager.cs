@@ -1,11 +1,16 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameObject _startScreenParent;
     [SerializeField] private GameObject _gameoverScreenParent;
+    [SerializeField] private Text _gameoverText;
 
+    private const string GAME_OVER_LOSS_MSG = "Game Over";
+    private const string GAME_OVER_WIN_MSG = "You Win!!!";
+    
     public void OnStartButtonPressed()
     {
         StartGame();
@@ -29,12 +34,12 @@ public class GameManager : MonoBehaviour
         _gameoverScreenParent.SetActive(false);
     }
 
-    void ShowGameOverScreen()
+    void ShowGameOverScreen(bool win)
     {
         _gameoverScreenParent.SetActive(true);
         _startScreenParent.SetActive(false);
+        _gameoverText.text = win ? GAME_OVER_WIN_MSG : GAME_OVER_LOSS_MSG;
     }
-    
     
     private void Awake()
     {
@@ -55,14 +60,13 @@ public class GameManager : MonoBehaviour
 
     void OnPlayerDestroyed()
     {
-        Debug.Log("Game over!");   
         EventManager.TriggerEvent(Constants.Events.GAME_OVER, false);
-        ShowGameOverScreen();
+        ShowGameOverScreen(false);
     }
 
     void OnAllEnemiesDestroyed()
     {
-        Debug.Log("You win this round!");
         EventManager.TriggerEvent(Constants.Events.GAME_OVER, true);
+        ShowGameOverScreen(true);
     }
 }

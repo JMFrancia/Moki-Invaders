@@ -19,16 +19,23 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         EventManager.StartListening(Constants.Events.GAME_START, OnGameStart);
+        EventManager.StartListening(Constants.Events.GAME_OVER, OnGameOver);
     }
     
     private void OnDisable()
     {
         EventManager.StopListening(Constants.Events.GAME_START, OnGameStart);
+        EventManager.StopListening(Constants.Events.GAME_OVER, OnGameOver);
     }
 
     void OnGameStart()
     {
         Reset();
+    }
+
+    void OnGameOver(bool win)
+    {
+        _active = false;
     }
 
     private void Awake()
