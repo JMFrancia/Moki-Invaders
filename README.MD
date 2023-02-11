@@ -6,6 +6,8 @@ A lightweight Space Invaders clone.
 
 Start the game from Unity editor and use the mouse to control left and right, or build to IOS / Android and use touch control. Player fires automatically. Destroy all enemies to win. Destroy the UFOs for bonus points!
 
+*This game designed to be played in 16:9 portrait mode*. It will work in any aspect ratio, except UFOs might pop on screen if it's too wide. 
+
 ## PAQ (perhaps asked questions)
 
 ### Why do you use coroutines in some areas and not others?
